@@ -84,7 +84,7 @@ JsonWebservice.prototype = {
 	    });
 	}
 	runWhenFinished(notes);
-    },
+    }
 };
 
 
