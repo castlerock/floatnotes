@@ -10,12 +10,12 @@ var FloatNotesManager = (function() {
     var manager = null;
 
     return function(database) {
-        LOG('start to load manager')
+        LOG('start to load manager');
         if(manager) {
             return manager;
         }
 
-        LOG('manager loaded')
+        LOG('manager loaded');
         manager = this;
         this._db = database || new DatabaseConnector();
         this.notesByUrl = {};
