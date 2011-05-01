@@ -2,6 +2,7 @@
 
 Cu.import("resource://floatnotes/URLHandler.js");
 Cu.import("resource://floatnotes/database.js");
+Cu.import("resource://floatnotes/json_webservice.js");
 Cu.import("resource://floatnotes/preferences.js");
 
 var EXPORTED_SYMBOLS = ['FloatNotesManager'];
@@ -18,6 +19,7 @@ var FloatNotesManager = (function() {
         LOG('manager loaded');
         manager = this;
         this._db = database || new DatabaseConnector();
+	this._restservice = new JsonWebservice("http://localhost:3000/");
         this.notesByUrl = {};
         this.notes = {};
         this._observer_service = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
@@ -42,6 +44,7 @@ FloatNotesManager.prototype = {
         var domains = URLHandler.getSearchUrls(location);
         var domainsToFetch = [];
         var notesToReturn = [];
+	this._restservice.getNotesForURLs("hello","world");
 
         for(var i = domains.length -1; i > -1; --i) {
             var domain = domains[i];
@@ -93,7 +96,8 @@ FloatNotesManager.prototype = {
     },
 
     addNote: function(data, cb) {
-        LOG('Save note for the first time.')
+        LOG('Save note for the first time.');
+	
         var that = this;
         this._db.createNoteAndGetId(data, function(id, guid) {
             var domain = data.url;

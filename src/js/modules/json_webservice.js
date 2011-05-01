@@ -1,10 +1,12 @@
+//!#include "../header.js"
+
 var EXPORTED_SYMBOLS = ['JsonWebservice'];
 
 var JsonWebservice = (function() {
     return function(url) {
 	this.url = url;
     };
-});
+}());
 
 var SimpleAjax = function(domain) {
     this.domain = domain;
@@ -73,17 +75,29 @@ JsonWebservice.prototype = {
 
     // For now the note fetching by url is synchronous
     getNotesForURLs: function(urls,runWhenFinished) {
-	var notes = [];
-	var ajax = new SimpleAjax(this.url);
-	for each (var url in urls) {
-	    ajax.get("/notes.json?url=" + url, function(status,responseText) {
-		var resultSet = JSON.parse(responseText);
-		for each(var note in resultSet) {
-		    notes.push(note);
-		}
-	    });
-	}
-	runWhenFinished(notes);
+	LOG("Trying tof fetch stuff from " + urls);
+	// var notes = [];
+	// var ajax = new SimpleAjax(this.url);
+	// for each (var url in urls) {
+	//     ajax.get("/notes.json?url=" + url, function(status,responseText) {
+	// 	var resultSet = JSON.parse(responseText);
+	// 	for each(var note in resultSet) {
+	// 	    notes.push(note);
+	// 	}
+	//     });
+	// }
+	// runWhenFinished(notes);
+    },
+
+    createNoteAndGetId: function(note,runWhenFinished) {
+	
+    },
+    updateNote: function(note,runWhenFinished) {
+	
+    },
+
+    deleteNote: function(note_guid,runWhenFinished) {
+	
     }
 };
 

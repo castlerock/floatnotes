@@ -29,6 +29,7 @@ var Loader = {
     createFloatNotesView: function() {
         Cu.import("resource://floatnotes/manager.js");
         Cu.import("resource://floatnotes/database.js");
+	Cu.import("resource://floatnotes/json_webservice.js");
         Cu.import("resource://floatnotes/InPageNotesUI.js");
         window[MainUI.GLOBAL_NAME] = new MainUI(new FloatNotesManager(new DatabaseConnector()), new InPageNotesUI());
         LOG("View created");

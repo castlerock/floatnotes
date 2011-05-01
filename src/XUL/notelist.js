@@ -1,3 +1,4 @@
+Components.utils.import("resource://floatnotes/json_webservice.js");
 Components.utils.import("resource://floatnotes/database.js");
 Components.utils.import("resource://floatnotes/manager.js");
 Components.utils.import("resource://floatnotes/preferences.js");
