@@ -19,7 +19,7 @@ var FloatNotesManager = (function() {
         LOG('manager loaded');
         manager = this;
         this._db = database || new DatabaseConnector();
-	this._restservice = new JsonWebservice("http://localhost:3000/");
+	this._restservice = new JsonWebservice("http://localhost:3000");
         this.notesByUrl = {};
         this.notes = {};
         this._observer_service = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
@@ -108,6 +108,7 @@ FloatNotesManager.prototype = {
             that.notes[guid] = data;
             data.guid = guid;
             data.id = id;
+	    that._restservice.createNoteAndGetId(data,"foo");
             that._observer_service.notifyObservers(null, 'floatnotes-note-add', guid);
             if(typeof cb == 'function') {
                 cb(id, guid, data);
@@ -134,6 +135,7 @@ FloatNotesManager.prototype = {
  
         note.modification_date = new Date();
         this._db.updateNote(note, function() {
+	    that._restservice.updateNote(note,"foo");
             if(note._prevURL) {
                 that.updateCacheForNewURL(note, note._prevURL, note.url);
                 that._observer_service.notifyObservers(null, 'floatnotes-note-urlchange', note.guid);

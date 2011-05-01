@@ -12,15 +12,13 @@ var SimpleAjax = function(domain) {
     this.domain = domain;
     var simpleAjax = this;
 
-    this.xmlhttp = window.XMLHttpRequest ? 
-	new XMLHttpRequest() : 
-	new ActiveXObject("Microsoft.XMLHTTP");
+    this.xmlhttp = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
+		       .createInstance(Components.interfaces.nsIXMLHttpRequest);
 
     function onAjaxResponse() {
 	if(simpleAjax.xmlhttp.readystate == 4 && simpleAjax.xmlhttp.status == 200 && simpleAjax.onSuccess != null) {
 	    simpleAjax.onSuccess(simpleAjax.xmlhttp.status, simpleAjax.xmlhttp.responseText);
 	}
-	simpleAjax.onSuccess = null;
     }
 
     this.xmlhttp.onreadystatechange = onAjaxResponse;
@@ -76,6 +74,10 @@ JsonWebservice.prototype = {
     // For now the note fetching by url is synchronous
     getNotesForURLs: function(urls,runWhenFinished) {
 	LOG("Trying tof fetch stuff from " + urls);
+	var ajax = new SimpleAjax(this.url);
+	ajax.get("/notes.json",function(status,responseText) {
+	    LOG("The notes.json call has returned with status " + status + " and " + responseText);
+	});
 	// var notes = [];
 	// var ajax = new SimpleAjax(this.url);
 	// for each (var url in urls) {
@@ -90,10 +92,16 @@ JsonWebservice.prototype = {
     },
 
     createNoteAndGetId: function(note,runWhenFinished) {
-	
+	var ajax = new SimpleAjax(this.url);
+	ajax.post("/notes.json",JSON.stringify(note),function(status,responseText) {
+	    LOG("Note has been created");
+	});
     },
     updateNote: function(note,runWhenFinished) {
-	
+	var ajax = new SimpleAjax(this.url);
+	ajax.post("/notes/" + note.guid + ".json",JSON.stringify(note),function(status,responseText) {
+	    LOG("Note has been updated");
+	});
     },
 
     deleteNote: function(note_guid,runWhenFinished) {
