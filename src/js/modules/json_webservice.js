@@ -71,7 +71,6 @@ JsonWebservice.prototype = {
 	});
     },
 
-    // For now the note fetching by url is synchronous
     getNotesForURLs: function(urls,runWhenFinished) {
 	notes = [];
 	var urlLength = urls.length;
