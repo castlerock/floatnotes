@@ -69,3 +69,12 @@ About "locations" / scope
  Or maybe I even to to show a note on any site of github.com.
  
  To change the location of a note, click "Settings" in the notes menu and select another location.
+
+Install Using remote webservice based sync
+------------------------------------------
+
+1. Currently http://localhost:3000 is hardcoded as API end point.
+2. There is no per user concept.
+3. Have your sinatra server and install the extension and you should be good to go.
+
+
