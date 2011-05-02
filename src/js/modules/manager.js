@@ -44,7 +44,6 @@ FloatNotesManager.prototype = {
         var domains = URLHandler.getSearchUrls(location);
         var domainsToFetch = [];
         var notesToReturn = [];
-	this._restservice.getNotesForURLs("hello","world");
 
         for(var i = domains.length -1; i > -1; --i) {
             var domain = domains[i];
@@ -58,29 +57,24 @@ FloatNotesManager.prototype = {
                 notesToReturn = notesToReturn.concat(notes); 
             }
         }
-        if(domainsToFetch.length > 0) {
-            this._db.getNotesForURLs(domainsToFetch, function(notesdata) {
-                LOG('Manager loaded from DB: ' + notesdata.length + ' notes');
-                var notesByUrl = that.notesByUrl;
 
-                for (var i = 0, length = notesdata.length; i < length;i++) {
-                    var data = notesdata[i];
+	this._restservice.getNotesForURLs(domainsToFetch,function(notesdata) {
+	    LOG("********** The callback called from Manager.js");
+	    LOG('Manager loaded from DB: ' + notesdata.length + ' notes');
+            var notesByUrl = that.notesByUrl;
 
-                    if(typeof notesByUrl[data.url] == "undefined") {
-                        notesByUrl[data.url] = [];
-                    }
-                    notesByUrl[data.url].push(data);
-                    that.notes[data.guid] = data;
+            for (var i = 0, length = notesdata.length; i < length;i++) {
+		var data = notesdata[i];
+
+		if(typeof notesByUrl[data.url] == "undefined") {
+		    notesByUrl[data.url] = [];
                 }
+		notesByUrl[data.url].push(data);
+		that.notes[data.guid] = data;
+	    }
 
-                cb(notesToReturn.concat(notesdata));
-            });
-        }
-        else {
-            LOG('Everything cached');
-            cb(notesToReturn);
-        }
-
+            cb(notesToReturn.concat(notesdata));
+	});
     },
 
     saveNote: function(note, cb) {

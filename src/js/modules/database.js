@@ -103,6 +103,7 @@ DatabaseConnector.prototype = {
         var that = this;
         for (var i in urls) {
             var bp = params.newBindingParams();
+	    LOG("********** URL is " + urls[i]);
             bp.bindByName('url', urls[i]);
 
             params.addParams(bp);
